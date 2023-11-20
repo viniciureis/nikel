@@ -148,20 +148,30 @@ function getCashOut() {
   }
 }
 
+// ...
+
 function getTotal() {
     const transactions = data.transactions;
     let total = 0;
 
     transactions.forEach((item) => {
-        if(item.type === "1") {
+        if (item.type === "1") {
             total += item.value;
         } else {
             total -= item.value;
         }
-    })
+    });
 
     document.getElementById('total').innerHTML = `R$ ${total.toFixed(2)}`;
+
+    // Adicione a verificação para o saldo negativo
+    if (total < 0) {
+        alert("Atenção: Seu saldo está negativo!");
+    }
 }
+
+// ...
+
 
 function saveData(data) {
     localStorage.setItem(data.login, JSON.stringify(data));

@@ -32,35 +32,49 @@ document.getElementById("login-form").addEventListener("submit", function(e) {
 });
 
 //CRIAR CONTA
-document.getElementById("create-form").addEventListener("submit", function(e) {
-    e.preventDefault(); 
-
-    const email = document.getElementById("email-create-input").value;
+function validatePassword() {
     const password = document.getElementById("password-create-input").value;
+    const confirmPassword = document.getElementById("confirm-password-create-input").value;
 
-    if(email.length < 5) {
-        alert("Preencha o campo com um e-mail válido");
-        return;
-    }
-    
-    if(password.length < 4) {
-        alert("Preencha a senha com no minimo 4 digitos")
-        return;
+    if (password.length < 4) {
+        alert("Preencha a senha com no mínimo 4 dígitos");
+        return false;
     }
 
-    saveAccount({
-        login: email,
-        password: password,
-        transactions: []
+    if (password !== confirmPassword) {
+        alert("As senhas não coincidem");
+        return false;
+    }
 
-    });
+    return true;
+}
+
+// Adicione essa função ao evento onsubmit no formulário (create-form)
+document.getElementById("create-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (validatePassword()) {
+        const email = document.getElementById("email-create-input").value;
+        const password = document.getElementById("password-create-input").value;
+
+        if (email.length < 5) {
+            alert("Preencha o campo com um e-mail válido");
+            return;
+        }
+
+        saveAccount({
+            login: email,
+            password: password,
+            transactions: []
+        });
+
+        myModal.hide();
+
+        alert("Conta criada com sucesso!");
+    }
+});
+
     
-    myModal.hide();
 
-    alert("Conta criada com sucesso!");
-    
-
- });
 function checkLogged() {
     if(session) {
         sessionStorage.setItem("logged", session);
